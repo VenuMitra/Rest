@@ -37,6 +37,10 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
 	}
 
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public User(Integer id, String name, Date birthDate) {
 		super();
 		this.id = id;
