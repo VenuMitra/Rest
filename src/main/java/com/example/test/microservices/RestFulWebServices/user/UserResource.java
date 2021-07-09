@@ -27,7 +27,7 @@ public class UserResource {
 	
 	@PostMapping(path="/user")
 	public void createUser(@RequestBody User user) {
-		User savedUser = service.saveUser(user);
+		User savedUser = service.saveUser(user);  
 	}
 
 }
