@@ -3,7 +3,13 @@ package com.example.test.microservices.RestFulWebServices.user;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +21,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.test.microservices.RestFulWebServices.user.exception.NoUsersFoundExcpetion;
 import com.example.test.microservices.RestFulWebServices.user.exception.UserNotFoundException;
+
+import net.bytebuddy.asm.Advice.This;
 
 @RestController
 public class UserResource {
@@ -31,17 +39,20 @@ public class UserResource {
 	}
 
 	@GetMapping(path = "/user/{id}")
-	public User getUsers(@PathVariable int id) {
+	public EntityModel<User> getUsers(@PathVariable int id) {
 		User user = service.findOne(id);
 		if(user == null)
 			throw new UserNotFoundException("User id:"+id);
 		
-			return  user;
+		EntityModel<User> model = EntityModel.of(user);
+		WebMvcLinkBuilder linkToUsers = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getUsers());
+		model.add(linkToUsers.withRel("all-users"));
+			return  model;
 	}
 
 	//Returning response for the creation of user and also sending location of created user
 	@PostMapping(path = "/user")
-	public ResponseEntity<Object> createUser(@RequestBody User user) {
+	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 		User savedUser = service.saveUser(user);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
