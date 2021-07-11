@@ -33,5 +33,14 @@ public class UserDaoService {
 		return users.stream().filter(users->users.getId()==id).findAny().orElse(null);
 	}
 
+	public User deleteById(int id) {
+		for(User s:users) {
+			if(s.getId()==id) {
+				users.remove(id);
+				return s;
+			}
+		}
+		return null;
+	}
 	
 }
