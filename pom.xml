@@ -36,6 +36,12 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		
+		<!-- For providing basic security -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+		
 		<!-- http://localhost:8080 -->
 		<!-- Explore the api in visualized way -->
 		<dependency>
