@@ -25,9 +25,14 @@ public class UserResource {
 
 	@GetMapping(path = "/user/{id}")
 	public User getUsers(@PathVariable int id) {
-		return service.findOne(id);
+		User user = service.findOne(id);
+		if(user == null)
+			throw new UserNotFoundException("User id:"+id);
+		
+			return  user;
 	}
 
+	//Returning response for the creation of user and also sending location of created user
 	@PostMapping(path = "/user")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		User savedUser = service.saveUser(user);
