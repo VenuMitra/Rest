@@ -1,17 +1,40 @@
 package com.example.test.microservices.RestFulWebServices.user;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table
 public class User {
 
+	@Id
+	@GeneratedValue
 	private Integer id;
+		
 	@Size(min = 2,message = "Name should have atleast 2 charcters")
 	private String name;
+	
 	@Past
-	private Date birthDate;
+	private Date birthDate; 
+
+	@OneToMany(mappedBy = "user")
+	private List<Post> posts;
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 
 	public Integer getId() {
 		return id;
